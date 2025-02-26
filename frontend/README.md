@@ -3,6 +3,7 @@
 Este é o frontend da aplicação, desenvolvido com **Vue 2** e **SCSS**. Ele permite o **upload de PDFs**, exibe os **CPFs extraídos** e lista todos os CPFs armazenados no **Firebase Realtime Database**.
 
 ## 🚀 Tecnologias Utilizadas
+
 - Vue 2 (Options API)
 - Vue Router
 - SCSS
@@ -12,18 +13,19 @@ Este é o frontend da aplicação, desenvolvido com **Vue 2** e **SCSS**. Ele pe
 
 frontend/
 │── src/
-│ ├── assets/       # Estilos e imagens
-│ ├── components/   # Componentes reutilizáveis
-│ ├── views/        # Páginas principais
-│ ├── router/       # Configuração do Vue Router
-│ ├── store/        # Gerenciamento de estado
-│ ├── App.vue       # Componente raiz
-│ ├── main.js       # Entrada da aplicação
-│── public/         # Arquivos públicos (index.html)
-│── package.json    # Dependências do projeto
-│── README.md       # Documentação do frontend
+│ ├── assets/ # Estilos e imagens
+│ ├── components/ # Componentes reutilizáveis
+│ ├── views/ # Páginas principais
+│ ├── router/ # Configuração do Vue Router
+│ ├── store/ # Gerenciamento de estado
+│ ├── App.vue # Componente raiz
+│ ├── main.js # Entrada da aplicação
+│── public/ # Arquivos públicos (index.html)
+│── package.json # Dependências do projeto
+│── README.md # Documentação do frontend
 
 ## ⚙️ Instalação e Execução
+
 ```bash
 # Acesse a pasta do frontend
 cd frontend
@@ -50,3 +52,4 @@ npm run lint
 🔍 Extração e exibição de CPFs
 💾 Integração com Firebase Realtime Database
 📋 Lista todos os CPFs extraídos e armazenados
+```
