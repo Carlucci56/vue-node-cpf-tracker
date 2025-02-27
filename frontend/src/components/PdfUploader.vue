@@ -41,17 +41,9 @@ export default {
       formData.append("file", this.selectedFile);
 
       try {
-        const response = await axios.post(
-          "http://localhost:3000/upload",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-
-        console.log("====================================");
-        console.log(response.data.uploadResponse.filePath);
-        console.log("====================================");
+        await axios.post("http://localhost:3000/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
         alert("Upload bem-sucedido!");
       } catch (error) {
