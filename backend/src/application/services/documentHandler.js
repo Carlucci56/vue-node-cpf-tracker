@@ -1,6 +1,7 @@
 const FirebaseDocumentsRepository = require("../../infra/documentsRepository");
-const LogRepository  = require("../../infra/logRepository");
+const LogRepository = require("../../infra/logRepository");
 const Document = require("../../domain/entities/document");
+const logger = require("../../helpers/winstonConfig");
 
 class DocumentService {
   constructor() {
@@ -17,11 +18,16 @@ class DocumentService {
    * @throws {Error} Se qualquer um dos parâmetros obrigatórios não for fornecido.
    */
   async insertDocument(cpf, fileName, userIp) {
-    const document = new Document(cpf, fileName, userIp);
-
-    const response = await this.documentsRepository.insertDocument(document);
-    console.log(response);
-    return response;
+    try {
+      const document = new Document(cpf, fileName, userIp);
+      const response = await this.documentsRepository.insertDocument(document);
+      
+      logger.info("Documento inserido com sucesso", { cpf, fileName, userIp, response });
+      return response;
+    } catch (error) {
+      logger.error("Erro ao inserir documento", { cpf, fileName, userIp, error: error.message });
+      throw error;
+    }
   }
 
   /**
@@ -29,17 +35,29 @@ class DocumentService {
    * @returns {Object} documents - Lista de documentos armazenados.
    */
   async listDocuments() {
-    const documents = await this.documentsRepository.listDocuments();
-    var response = Object.values(documents).map(
-      doc => new Document(doc.cpf, doc.fileName, doc.userIp)
-    );
-    console.log(response);
-    return response;
+    try {
+      const documents = await this.documentsRepository.listDocuments();
+      const response = Object.values(documents).map(
+        doc => new Document(doc.cpf, doc.fileName, doc.userIp)
+      );
+      
+      logger.info("Listagem de documentos realizada", { count: response.length });
+      return response;
+    } catch (error) {
+      logger.error("Erro ao listar documentos", { error: error.message });
+      throw error;
+    }
   }
 
   async getLastUpload() {
-    const response = await this.logRepository.getLastUpload();
-    return response;
+    try {
+      const response = await this.logRepository.getLastUpload();
+      logger.info("Último upload recuperado", { response });
+      return response;
+    } catch (error) {
+      logger.error("Erro ao recuperar último upload", { error: error.message });
+      throw error;
+    }
   }
 }
 
