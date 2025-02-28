@@ -48,15 +48,10 @@ export default {
       formData.append("file", this.selectedFile);
 
       try {
-        const response = await axios.post(
-          "http://localhost:3000/upload",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
+        await axios.post("http://localhost:3000/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
-        console.log("Arquivo enviado:", response.data.uploadResponse.filePath);
         this.$toast.success("Upload realizado com sucesso!");
       } catch (error) {
         console.error("Erro ao enviar o PDF:", error);
