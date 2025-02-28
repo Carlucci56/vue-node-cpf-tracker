@@ -17,8 +17,6 @@
 ## 📌 Sobre o Projeto  
 Este projeto foi desenvolvido como parte de um desafio técnico, seguindo as boas práticas de **clean code, SOLID e arquitetura escalável**. A aplicação é simples, mas permite fácil expansão e aprimoramento.  
 
-💡 **Deploy opcional:** Caso tenha feito o deploy, adicione um link aqui.  
-
 ## ⚡ Como Executar  
 ```bash
 # Clone o repositório
@@ -37,3 +35,8 @@ npm run dev
 # Execute o frontend
 cd ../frontend
 npm run serve
+```
+
+## 📌 To-Do List (Tarefas a Executar)  
+🔲 **Testes automatizados e cobertura unitaria**  
+🔲 **Paginação de dados do banco para listagem**  

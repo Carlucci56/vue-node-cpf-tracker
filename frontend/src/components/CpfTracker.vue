@@ -8,8 +8,8 @@
       <div class="upload-box">
         <!-- Botões para ações -->
         <div class="button-container">
-          <button @click="visualizar">Listar</button>
-          <button @click="buscarCPFs">Listar tudo</button>
+          <button @click="getLastUpload">Listar</button>
+          <button @click="listDocuments">Listar tudo</button>
         </div>
 
         <!-- Tabela para exibição dos CPFs -->
@@ -41,22 +41,43 @@ import axios from "axios";
 export default {
   data() {
     return {
-      cpfs: [], // Lista para armazenar os CPFs recuperados
-      carregado: false, // Indica se os dados já foram carregados
+      cpfs: [],
+      carregado: false,
+      fileName: "", // Adicionado para armazenar o nome do arquivo
     };
   },
   methods: {
-    async buscarCPFs() {
+    async listDocuments() {
       try {
         const response = await axios.get("http://localhost:3000/api/documents");
         this.cpfs = response.data ? Object.values(response.data) : [];
-        this.carregado = true; // Marca que os dados foram carregados
+        this.carregado = true;
+        this.$toast.success("Sucesso!");
       } catch (error) {
         console.error("Erro ao buscar CPFs:", error);
+        this.$toast.error("Erro ao buscar CPFs. Tente novamente!");
       }
     },
-    visualizar() {
-      alert("Ação de visualizar ainda não implementada!");
+    async getLastUpload() {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/documents/last"
+        );
+
+        if (response.data && response.data.cpfs) {
+          this.cpfs = response.data.cpfs.map((cpf) => ({
+            cpf,
+            fileName: response.data.fileName, // Adicionando o nome do arquivo a cada CPF
+          }));
+          this.fileName = response.data.fileName;
+        }
+
+        this.carregado = true;
+        this.$toast.success("Último upload recuperado com sucesso!");
+      } catch (error) {
+        console.error("Erro ao buscar o último upload:", error);
+        this.$toast.error("Erro ao buscar o último upload. Tente novamente!");
+      }
     },
   },
 };

@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const pdfParse = require("pdf-parse");
 const DocumentService = require("./documentHandler");
+const LogRepository = require("../../infra/logRepository");
 
 /**
  * @class FileService
@@ -10,6 +11,7 @@ const DocumentService = require("./documentHandler");
 class FileService {
   constructor() {
     this.documentService = new DocumentService();
+    this.logRepository = new LogRepository();
   }
 
   /**
@@ -52,26 +54,27 @@ class FileService {
     const cpfs = rawText.match(cpfRegex) || [];
 
     if (cpfs.length === 0) {
-      const response = {
+      return {
         message: "Nenhum CPF encontrado!",
         inserts: 0,
         cpfs,
         user: userIp,
       };
-      console.log(response);
-      return response;
     }
 
-    const insertions = await Promise.all(cpfs.map((cpf) => this.documentService.insertDocument(cpf, fileName, userIp)));
+    const lastUpdate = await this.logRepository.insertLastUploadLog(userIp, cpfs, fileName);
+    console.log(lastUpdate);
 
-    const response = {
+    const insertions = await Promise.all(
+      cpfs.map((cpf) => this.documentService.insertDocument(cpf, fileName, userIp))
+    );
+
+    return {
       message: "Leitura e inserção concluída!",
       inserts: insertions.length,
       insertions,
       user: userIp,
     };
-    console.log(response);
-    return response;
   }
 }
 
