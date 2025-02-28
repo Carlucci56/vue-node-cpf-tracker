@@ -1,17 +1,39 @@
-const db = require("../../infra/firebase/firebase");
+const FirebaseDocumentsRepository = require("../../infra/documentsRepository");
+const Document = require("../../domain/entities/document");
 
-const insertDocumentHandler = async (cpf) => {
-  if (!cpf) throw new Error("CPF é obrigatório");
+class DocumentService {
+  constructor() {
+    this.documentsRepository = new FirebaseDocumentsRepository();
+  }
 
-  const ref = db.ref("cpf").push();
-  await ref.set({ cpf });
+  /**
+   * Insere um novo documento contendo um CPF no banco de dados.
+   * @param {string} cpf - O CPF a ser armazenado.
+   * @param {string} fileName - O nome do arquivo de onde o CPF foi extraído.
+   * @param {string} userIp - O endereço IP do usuário que fez o upload.
+   * @returns {Object} response - Objeto contendo os dados inseridos.
+   * @throws {Error} Se qualquer um dos parâmetros obrigatórios não for fornecido.
+   */
+  async insertDocument(cpf, fileName, userIp) {
+    const document = new Document(cpf, fileName, userIp);
 
-  return { id: ref.key, cpf };
-};
+    const response = await this.documentsRepository.insertDocument(document);
+    console.log(response);
+    return response;
+  }
 
-const listDocumentHandler = async () => {
-  const snapshot = await db.ref("cpf").once("value");
-  return snapshot.val() || {};
-};
+  /**
+   * Retorna todos os documentos armazenados no banco de dados.
+   * @returns {Object} documents - Lista de documentos armazenados.
+   */
+  async listDocuments() {
+    const documents = await this.documentsRepository.listDocuments();
+    var response = Object.values(documents).map(
+      doc => new Document(doc.cpf, doc.fileName, doc.userIp)
+    );
+    console.log(response);
+    return response;
+  }
+}
 
-module.exports = { insertDocumentHandler, listDocumentHandler };
+module.exports = DocumentService;

@@ -1,24 +1,33 @@
-const { insertDocumentHandler, listDocumentHandler } = require("../../application/services/documentHandler");
+const DocumentService = require("../../application/services/documentHandler");
 
-// Post CPF
-async function insertDocument(req, res) {
-  try {
-    const { cpf } = req.body;
-    const response = await insertDocumentHandler(cpf);
-    res.status(201).send(response);
-  } catch (error) {
-    res.status(400).send(error.message);
+class DocumentController {
+  constructor() {
+    this.documentService = new DocumentService();
+  }
+
+  async insertDocument(req, res) {
+    try {
+      const { cpf, fileName } = req.body;
+      if (!cpf) return res.status(400).send("CPF é obrigatório");
+      if (!fileName) return res.status(400).send("Nome do arquivo é obrigatório");
+
+      const userIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+      const response = await this.documentService.insertDocument(cpf, fileName, userIp);
+
+      res.status(201).send(response);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  }
+
+  async listDocuments(req, res) {
+    try {
+      const cpfs = await this.documentService.listDocuments();
+      res.status(200).json(cpfs);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
   }
 }
 
-// Get ALL CPFs
-async function listDocument(req, res) {
-  try {
-    const response = await listDocumentHandler();
-    res.status(200).json(response);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-}
-
-module.exports = { insertDocument, listDocument };
+module.exports = DocumentController;

@@ -3,13 +3,17 @@
     <div class="content">
       <h1>Bem-vindo ao CPF Tracker!</h1>
       <p>Gerencie e consulte CPFs de forma fácil.</p>
+
       <div class="upload-box">
         <h2>Enviar PDF</h2>
+
+        <!-- Input para seleção do arquivo PDF -->
         <input
           type="file"
           @change="handleFileUpload"
           accept="application/pdf"
         />
+
         <div class="button-container">
           <button @click="uploadFile">Enviar</button>
         </div>
@@ -24,13 +28,16 @@ import axios from "axios";
 export default {
   data() {
     return {
-      selectedFile: null,
+      selectedFile: null, // Armazena o arquivo selecionado pelo usuário
     };
   },
   methods: {
+    // Captura o arquivo selecionado pelo usuário
     handleFileUpload(event) {
       this.selectedFile = event.target.files[0];
     },
+
+    // Realiza o upload do arquivo para o backend
     async uploadFile() {
       if (!this.selectedFile) {
         alert("Selecione um arquivo PDF!");
@@ -63,6 +70,7 @@ export default {
 </script>
 
 <style scoped>
+/* Estilização geral do container de upload */
 .upload-container {
   font-family: "Barlow", sans-serif;
   display: flex;
@@ -71,7 +79,6 @@ export default {
   min-height: 60vh;
   background-color: #f4f4f4;
   color: #3a3a3a;
-  padding: 0px;
   text-align: center;
 }
 
@@ -98,11 +105,11 @@ p {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
   width: 100%;
   max-width: 320px;
 }
 
+/* Estilização do input de arquivo */
 input {
   width: 300px;
   padding: 10px;
@@ -117,6 +124,7 @@ input {
   margin-top: 15px;
 }
 
+/* Estilização do botão de envio */
 button {
   font: 600 15px "Open Sans", sans-serif;
   transition: all 0.2s ease;
@@ -134,6 +142,7 @@ button:hover {
   background-color: #69c970;
 }
 
+/* Responsividade para telas menores */
 @media (max-width: 480px) {
   h1 {
     font-size: 1.5rem;
