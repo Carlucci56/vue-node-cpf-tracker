@@ -1,9 +1,10 @@
 const express = require("express");
-const { insertDocument, listDocument } = require("../controllers/documentController");
+const DocumentController = require("../controllers/documentController");
 
 const router = express.Router();
+const documentController = new DocumentController();
 
-router.post("/document", insertDocument);
-router.get("/documents", listDocument);
+router.post("/document", (req, res) => documentController.insertDocument(req, res));
+router.get("/documents", (req, res) => documentController.listDocuments(req, res));
 
 module.exports = router;

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Cabeçalho com logo e título -->
     <header class="upload-header">
       <button class="logo-button">
         <img src="/simpleshub_logo.png" alt="Logo SimplesHub" />
@@ -7,11 +8,29 @@
       <h1 class="upload-title">SimplesHub - CPF Tracker</h1>
     </header>
 
+    <!-- Menu de navegação para alternar entre abas -->
+    <nav class="tab-menu">
+      <button
+        :class="{ active: activeTab === 'upload' }"
+        @click="activeTab = 'upload'"
+      >
+        Enviar PDF
+      </button>
+      <button
+        :class="{ active: activeTab === 'tracker' }"
+        @click="activeTab = 'tracker'"
+      >
+        Consultar CPFs
+      </button>
+    </nav>
+
+    <!-- Conteúdo principal renderizado com base na aba ativa -->
     <main>
-      <PdfUploader />
-      <CpfTracker />
+      <PdfUploader v-if="activeTab === 'upload'" />
+      <CpfTracker v-if="activeTab === 'tracker'" />
     </main>
 
+    <!-- Rodapé -->
     <footer class="footer"></footer>
   </div>
 </template>
@@ -25,10 +44,16 @@ export default {
     CpfTracker,
     PdfUploader,
   },
+  data() {
+    return {
+      activeTab: "upload", // Define a aba inicial como "upload"
+    };
+  },
 };
 </script>
 
 <style scoped>
+/* Estilos do cabeçalho */
 .upload-header {
   height: 135px;
   display: flex;
@@ -37,6 +62,7 @@ export default {
   gap: 15px;
 }
 
+/* Botão do logo */
 .logo-button {
   background: none;
   border: none;
@@ -49,6 +75,7 @@ export default {
   height: 65px;
 }
 
+/* Título do cabeçalho */
 .upload-title {
   font-size: 35px;
   line-height: 35px;
@@ -60,5 +87,34 @@ export default {
   padding: 5px 0 0 0;
   font-family: "Barlow", sans-serif;
   font-weight: 600;
+}
+
+/* Menu de navegação */
+.tab-menu {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.tab-menu button {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  border-bottom: 3px solid transparent;
+}
+
+/* Aba ativa */
+.tab-menu button.active {
+  border-bottom: 3px solid #2b9933;
+  color: #2b9933;
+}
+
+/* Efeito hover */
+.tab-menu button:hover {
+  color: #69c970;
 }
 </style>
