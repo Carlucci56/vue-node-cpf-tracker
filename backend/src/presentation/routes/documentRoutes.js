@@ -6,5 +6,6 @@ const documentController = new DocumentController();
 
 router.post("/document", (req, res) => documentController.insertDocument(req, res));
 router.get("/documents", (req, res) => documentController.listDocuments(req, res));
+router.get("/documents/last", (req, res) => documentController.getLastUpload(req, res));
 
 module.exports = router;

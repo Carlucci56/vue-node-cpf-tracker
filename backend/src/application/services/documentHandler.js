@@ -1,9 +1,11 @@
 const FirebaseDocumentsRepository = require("../../infra/documentsRepository");
+const LogRepository  = require("../../infra/logRepository");
 const Document = require("../../domain/entities/document");
 
 class DocumentService {
   constructor() {
     this.documentsRepository = new FirebaseDocumentsRepository();
+    this.logRepository = new LogRepository();
   }
 
   /**
@@ -32,6 +34,11 @@ class DocumentService {
       doc => new Document(doc.cpf, doc.fileName, doc.userIp)
     );
     console.log(response);
+    return response;
+  }
+
+  async getLastUpload() {
+    const response = await this.logRepository.getLastUpload();
     return response;
   }
 }

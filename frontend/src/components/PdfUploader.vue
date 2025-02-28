@@ -40,7 +40,7 @@ export default {
     // Realiza o upload do arquivo para o backend
     async uploadFile() {
       if (!this.selectedFile) {
-        alert("Selecione um arquivo PDF!");
+        this.$toast.warning("Selecione um arquivo PDF!");
         return;
       }
 
@@ -56,13 +56,11 @@ export default {
           }
         );
 
-        console.log("====================================");
-        console.log(response.data.uploadResponse.filePath);
-        console.log("====================================");
-
-        alert("Upload bem-sucedido!");
+        console.log("Arquivo enviado:", response.data.uploadResponse.filePath);
+        this.$toast.success("Upload realizado com sucesso!");
       } catch (error) {
         console.error("Erro ao enviar o PDF:", error);
+        this.$toast.error("Erro ao enviar o PDF. Tente novamente!");
       }
     },
   },

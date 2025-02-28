@@ -28,6 +28,15 @@ class DocumentController {
       res.status(500).send(error.message);
     }
   }
+
+  async getLastUpload(req, res) {
+    try {
+      const cpfs = await this.documentService.getLastUpload();
+      res.status(200).json(cpfs);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  }
 }
 
 module.exports = DocumentController;
